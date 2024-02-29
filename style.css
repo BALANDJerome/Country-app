@@ -26,3 +26,30 @@ input[type="range"] {
   font-size: 1.2rem;
   transform: translateY(-3px);
 }
+.countries-container ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.countries-container li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  min-height: 250px;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgb(20, 20, 20);
+  color: rgb(245, 245, 245);
+  text-align: center;
+}
+.countries-container li img {
+  height: 80px;
+  width: 130px;
+}
+h3 {
+  font-size: 1rem;
+  margin: 5px;
+}
