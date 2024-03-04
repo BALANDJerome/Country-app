@@ -14,6 +14,7 @@ const inputSearch = document.getElementById("inputSearch");
 const result = document.querySelector(".countries-container");
 let countries = [];
 let inputValue = 24;
+let min, max;
 
 fetchCountry = async () => {
   await fetch("https://restcountries.com/v3.1/all")
@@ -27,13 +28,13 @@ countryDisplay = () => {
     .filter((country) =>
       country.translations.fra.common.includes(inputSearch.value)
     )
-    // .sort((a, b) => {
-    //   if () {
-    //     return a - b;
-    //   } else if () {
-    //     return b - a;
-    //   }
-    // })
+    .sort((a, b) => {
+      if (min) {
+        return a.population - b.population;
+      } else if (max) {
+        return b.population - a.population;
+      }
+    })
     .slice(0, inputValue)
     .map(
       (country) =>
@@ -55,6 +56,16 @@ inputSearch.addEventListener("input", (e) => {
 inputRange.addEventListener("input", (e) => {
   inputValue = inputRange.value;
   rangeValue.textContent = `${inputValue}`;
+  countryDisplay();
+});
+minToMax.addEventListener("click", () => {
+  min = 1;
+  max = null;
+  countryDisplay();
+});
+maxToMin.addEventListener("click", () => {
+  min = null;
+  max = 1;
   countryDisplay();
 });
 
