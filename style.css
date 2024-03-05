@@ -26,13 +26,12 @@ input[type="range"] {
   font-size: 1.2rem;
   transform: translateY(-3px);
 }
-.countries-container ul {
-  list-style: none;
+.countries-container {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
+  justify-content: center;
 }
-.countries-container li {
+.card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,7 +44,7 @@ input[type="range"] {
   color: rgb(245, 245, 245);
   text-align: center;
 }
-.countries-container li img {
+.card img {
   height: 80px;
   width: 130px;
 }

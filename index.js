@@ -14,7 +14,7 @@ const inputSearch = document.getElementById("inputSearch");
 const result = document.querySelector(".countries-container");
 let countries = [];
 let inputValue = 24;
-let min, max;
+let min, max, alphabetique;
 
 fetchCountry = async () => {
   await fetch("https://restcountries.com/v3.1/all")
@@ -24,7 +24,7 @@ fetchCountry = async () => {
 };
 
 countryDisplay = () => {
-  result.innerHTML = `<ul>${countries
+  result.innerHTML = countries
     .filter((country) =>
       country.translations.fra.common.includes(inputSearch.value)
     )
@@ -33,21 +33,23 @@ countryDisplay = () => {
         return a.population - b.population;
       } else if (max) {
         return b.population - a.population;
+      } else if (alphabetique) {
+        return a.translations.fra.common - b.translations.fra.common;
       }
     })
     .slice(0, inputValue)
     .map(
       (country) =>
         `
-    <li>
+    <div class="card">
       <img src=${country.flags.png} alt="photo ${country.flags.alt}">
       <h2>${country.translations.fra.common}</h2>
       <h3>${country.capital}</h3>
       <p>Population : ${country.population}</p>
-    </li>
+    </div>
   `
     )
-    .join("")}</ul>`;
+    .join("");
 };
 
 inputSearch.addEventListener("input", (e) => {
@@ -61,11 +63,19 @@ inputRange.addEventListener("input", (e) => {
 minToMax.addEventListener("click", () => {
   min = 1;
   max = null;
+  alphabetique = null;
   countryDisplay();
 });
 maxToMin.addEventListener("click", () => {
   min = null;
   max = 1;
+  alphabetique = null;
+  countryDisplay();
+});
+alpha.addEventListener("click", () => {
+  min = null;
+  max = null;
+  alphabetique = 1;
   countryDisplay();
 });
 
