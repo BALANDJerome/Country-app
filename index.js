@@ -2,9 +2,10 @@
 
 const inputSearch = document.getElementById("inputSearch");
 const result = document.querySelector(".countries-container");
+const buttons = document.querySelectorAll(".btnSort");
 let countries = [];
 let inputValue = 24;
-let min, max;
+let min, max, alpha;
 
 fetchCountry = async () => {
   await fetch("https://restcountries.com/v3.1/all")
@@ -19,10 +20,10 @@ countryDisplay = () => {
       country.translations.fra.common.includes(inputSearch.value)
     )
     .sort((a, b) => {
-      if (min) {
-        return a.population - b.population;
-      } else if (max) {
-        return b.population - a.population;
+      if (min || max) {
+        return min ? a.population - b.population : b.population - a.population;
+      } else if (alpha) {
+        return a.translations.fra.common > b.translations.fra.common ? 1 : -1;
       }
     })
     .slice(0, inputValue)
@@ -43,20 +44,36 @@ countryDisplay = () => {
 inputSearch.addEventListener("input", (e) => {
   countryDisplay();
 });
+
 inputRange.addEventListener("input", (e) => {
   inputValue = inputRange.value;
   rangeValue.textContent = `${inputValue}`;
   countryDisplay();
 });
-minToMax.addEventListener("click", () => {
-  min = 1;
-  max = null;
-  countryDisplay();
-});
-maxToMin.addEventListener("click", () => {
-  min = null;
-  max = 1;
-  countryDisplay();
+
+buttons.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    switch (e.target.id) {
+      case "minToMax":
+        min = true;
+        max = false;
+        alpha = false;
+        break;
+      case "maxToMin":
+        min = false;
+        max = true;
+        alpha = false;
+        break;
+      case "alpha":
+        min = false;
+        max = false;
+        alpha = true;
+        break;
+      default:
+        nul;
+    }
+    countryDisplay();
+  });
 });
 
 fetchCountry();
