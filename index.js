@@ -23,7 +23,14 @@ countryDisplay = () => {
       if (min || max) {
         return min ? a.population - b.population : b.population - a.population;
       } else if (alpha) {
-        return a.translations.fra.common > b.translations.fra.common ? 1 : -1;
+        // return a.translations.fra.common > b.translations.fra.common ? 1 : -1;
+        return a.translations.fra.common.localeCompare(
+          b.translations.fra.common,
+          "fr",
+          {
+            ignorePunctuation: true,
+          }
+        );
       }
     })
     .slice(0, inputValue)
