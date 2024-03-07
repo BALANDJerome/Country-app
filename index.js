@@ -1,10 +1,7 @@
-// 7 - Gérer les 3 boutons pour trier (méthode sort()) les pays
-
 const inputSearch = document.getElementById("inputSearch");
 const result = document.querySelector(".countries-container");
 const buttons = document.querySelectorAll(".btnSort");
 let countries = [];
-let inputValue = 24;
 let min, max, alpha;
 
 fetchCountry = async () => {
@@ -17,13 +14,14 @@ fetchCountry = async () => {
 countryDisplay = () => {
   result.innerHTML = countries
     .filter((country) =>
-      country.translations.fra.common.includes(inputSearch.value)
+      country.translations.fra.common
+        .toLowerCase()
+        .includes(inputSearch.value.toLowerCase())
     )
     .sort((a, b) => {
       if (min || max) {
         return min ? a.population - b.population : b.population - a.population;
       } else if (alpha) {
-        // return a.translations.fra.common > b.translations.fra.common ? 1 : -1;
         return a.translations.fra.common.localeCompare(
           b.translations.fra.common,
           "fr",
@@ -33,28 +31,25 @@ countryDisplay = () => {
         );
       }
     })
-    .slice(0, inputValue)
+    .slice(0, inputRange.value)
     .map(
       (country) =>
         `
     <div class="card">
-      <img src=${country.flags.png} alt="photo ${country.flags.alt}">
+      <img src=${country.flags.png} alt="drapeau ${country.flags.alt}">
       <h2>${country.translations.fra.common}</h2>
       <h3>${country.capital}</h3>
-      <p>Population : ${country.population}</p>
+      <p>Population : ${country.population.toLocaleString()}</p>
     </div>
   `
     )
     .join("");
 };
 
-inputSearch.addEventListener("input", (e) => {
-  countryDisplay();
-});
+inputSearch.addEventListener("input", countryDisplay);
 
 inputRange.addEventListener("input", (e) => {
-  inputValue = inputRange.value;
-  rangeValue.textContent = `${inputValue}`;
+  rangeValue.textContent = `${inputRange.value}`;
   countryDisplay();
 });
 
