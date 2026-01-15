@@ -5,9 +5,15 @@ let countries = [];
 let min, max, alpha;
 
 fetchCountry = async () => {
-  await fetch("https://restcountries.com/v3.1/all")
+  //await fetch("https://restcountries.com/v3.1/all")
+  await fetch(
+    "https://restcountries.com/v3.1/all?fields=translations,flags,population"
+  )
     .then((res) => res.json())
     .then((data) => (countries = data));
+
+  console.log(countries);
+
   countryDisplay();
 };
 
@@ -23,11 +29,7 @@ countryDisplay = () => {
         return min ? a.population - b.population : b.population - a.population;
       } else if (alpha) {
         return a.translations.fra.common.localeCompare(
-          b.translations.fra.common,
-          "fr",
-          {
-            ignorePunctuation: true,
-          }
+          b.translations.fra.common
         );
       }
     })
